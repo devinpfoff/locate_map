@@ -1,54 +1,58 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
-        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/MarkerCluster.css">
-        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
-        <link rel="stylesheet" href="css/leaflet-search.css">
-        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
-        <link rel="stylesheet" href="css/leaflet-measure.css">
-        <style>
-            html, body, #map {
-                width: 100%;
-                height: 100%;
-                padding: 0;
-                margin: 0;
-            }
-        </style>
-        <title></title>
-    </head>
-    <body>
-        <div id="map">
-        </div>
-        <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/leaflet-svg-shape-markers.min.js"></script>
-        <script src="js/leaflet.rotatedMarker.js"></script>
-        <script src="js/leaflet.pattern.js"></script>
-        <script src="js/leaflet-hash.js"></script>
-        <script src="js/Autolinker.min.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
-        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
-        <script src="js/leaflet-measure.js"></script>
-        <script src="js/leaflet.markercluster.js"></script>
-        <script src="js/leaflet-search.js"></script>
-        <script src="data/MasterAddress_2.js"></script>
-        <script src="data/MapPoints_4.js"></script>
-        <script>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/MarkerCluster.css">
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="css/leaflet-search.css">
+    <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+    <link rel="stylesheet" href="css/leaflet-measure.css">
+    <style>
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <title></title>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet-svg-shape-markers.min.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+    <script src="js/leaflet-measure.js"></script>
+    <script src="js/leaflet.markercluster.js"></script>
+    <script src="js/leaflet-search.js"></script>
+    <script src="data/address.js"></script>
+    <script src="data/points.js"></script>
+    <script>
         var map = L.map('map', {
-            zoomControl:true, maxZoom:18, minZoom:1
+            zoomControl: true, maxZoom: 18, minZoom: 1
         }).setView([38.717, -87.670], 9);
         var hash = new L.Hash(map);
-        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
-        
+
         var measureControl = new L.Control.Measure({
             position: 'topleft',
             primaryLengthUnit: 'feet',
@@ -58,23 +62,19 @@
         });
         measureControl.addTo(map);
         document.getElementsByClassName('leaflet-control-measure-toggle')[0]
-        .innerHTML = '';
+            .innerHTML = '';
         document.getElementsByClassName('leaflet-control-measure-toggle')[0]
-        .className += ' fas fa-ruler';
+            .className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
-        function setBounds() {
-        }
-        var overlay_GoogleSatelliteHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+        var g_satellite = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
             opacity: 1.0
         });
-        overlay_GoogleSatelliteHybrid_0.addTo(map);
-        map.addLayer(overlay_GoogleSatelliteHybrid_0);
-        var overlay_GoogleRoads_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}', {
+        g_satellite.addTo(map);
+        var g_roads = L.tileLayer('https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}', {
             opacity: 1.0
         });
-        overlay_GoogleRoads_1.addTo(map);
-        map.addLayer(overlay_GoogleRoads_1);
-        function pop_MasterAddress_2(feature, layer) {
+        g_roads.addTo(map);
+        function pop_address(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2" style="white-space: nowrap;"><b>Address: </b> ' + (feature.properties['a'] !== null ? Autolinker.link(String(feature.properties['a'])) : '') + '</td>\
@@ -95,12 +95,12 @@
                         <td colspan="2"><b>Township: </b> ' + (feature.properties['t'] !== null ? Autolinker.link(String(feature.properties['t'])) : '') + '</td>\
                     </tr>\
                 </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
+            layer.bindPopup(popupContent, { maxHeight: 400 });
         }
 
-        function style_MasterAddress_2_0() {
+        function style_address() {
             return {
-                pane: 'pane_MasterAddress_2',
+                pane: 'pane_address',
                 radius: 8,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
@@ -113,32 +113,31 @@
                 fillColor: 'rgba(183,0,3,1.0)',
             }
         }
-        map.createPane('pane_MasterAddress_2');
-        map.getPane('pane_MasterAddress_2').style.zIndex = 402;
-        map.getPane('pane_MasterAddress_2').style['mix-blend-mode'] = 'normal';
-        var layer_MasterAddress_2 = new L.geoJson(json_MasterAddress_2, {
-            attribution: '<a href=""></a>',
-            pane: 'pane_MasterAddress_2',
-            onEachFeature: pop_MasterAddress_2,
+        map.createPane('pane_address');
+        map.getPane('pane_address').style.zIndex = 402;
+        map.getPane('pane_address').style['mix-blend-mode'] = 'normal';
+        var layer_address = new L.geoJson(json_address, {
+            pane: 'pane_address',
+            onEachFeature: pop_address,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_MasterAddress_2_0(feature));
+                return L.circleMarker(latlng, style_address(feature));
             },
         });
-        var cluster_MasterAddress_2 = new L.MarkerClusterGroup({
+        var cluster_address = new L.MarkerClusterGroup({
             showCoverageOnHover: false,
             spiderfyDistanceMultiplier: 2,
             disableClusteringAtZoom: 16,
             chunkedLoading: true
         });
-        cluster_MasterAddress_2.addLayer(layer_MasterAddress_2);
+        cluster_address.addLayer(layer_address);
 
-        bounds_group.addLayer(layer_MasterAddress_2);
+        bounds_group.addLayer(layer_address);
 
-        function pop_MapPoints_4(feature, layer) {
+        function pop_points(feature, layer) {
             var popupContent = '<table>\
                 <tr>\
                     <td colspan="2"><b>Map Loc: </b> ' + (feature.properties['e'] !== null ? Autolinker.link(String(feature.properties['e'])) : '') + '</td>\
@@ -156,12 +155,12 @@
                     <td colspan="2"><b>Township: </b> ' + (feature.properties['t'] !== null ? Autolinker.link(String(feature.properties['t'])) : '') + '</td>\
                 </tr>\
             </table>'
-            layer.bindPopup(popupContent, {maxHeight: 400});
+            layer.bindPopup(popupContent, { maxHeight: 400 });
         }
 
-        function style_MapPoints_4_0() {
+        function style_points() {
             return {
-                pane: 'pane_MapPoints_4',
+                pane: 'pane_points',
                 radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
@@ -174,52 +173,52 @@
                 fillColor: 'rgba(212,138,0,1.0)',
             }
         }
-        map.createPane('pane_MapPoints_4');
-        map.getPane('pane_MapPoints_4').style.zIndex = 404;
-        map.getPane('pane_MapPoints_4').style['mix-blend-mode'] = 'normal';
-        var layer_MapPoints_4 = new L.geoJson(json_MapPoints_4, {
-            attribution: '<a href=""></a>',
-            pane: 'pane_MapPoints_4',
-            onEachFeature: pop_MapPoints_4,
+        map.createPane('pane_points');
+        map.getPane('pane_points').style.zIndex = 404;
+        map.getPane('pane_points').style['mix-blend-mode'] = 'normal';
+        var layer_points = new L.geoJson(json_points, {
+            pane: 'pane_points',
+            onEachFeature: pop_points,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_MapPoints_4_0(feature));
+                return L.circleMarker(latlng, style_points(feature));
             },
         });
-        var cluster_MapPoints_4 = new L.MarkerClusterGroup({
+        var cluster_points = new L.MarkerClusterGroup({
             showCoverageOnHover: false,
             spiderfyDistanceMultiplier: 2,
             disableClusteringAtZoom: 16,
             chunkedLoading: true
         });
-        cluster_MapPoints_4.addLayer(layer_MapPoints_4);
+        cluster_points.addLayer(layer_points);
 
-        bounds_group.addLayer(layer_MapPoints_4);
-        cluster_MapPoints_4.addTo(map);
+        bounds_group.addLayer(layer_points);
+        cluster_points.addTo(map);
         var osmGeocoder = new L.Control.Geocoder({
             collapsed: true,
             position: 'topleft',
             text: 'Search',
-            title: 'Testing',
+            title: '',
             geocoder: new L.Control.Geocoder.Bing('Ap9zKN8v6Q6w11AUCuW0z12u8vXu8gOtVE8RaqZTQMrlLibFv3-m5rYAWRhief8z')
         }).addTo(map);
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .className += ' fa fa-search';
+            .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .title += 'Search for a place';
-        L.control.layers({"Google Roads": overlay_GoogleRoads_1,"Google Satellite": overlay_GoogleSatelliteHybrid_0,},{'<img src="legend/MapPoints_4.png" /> Map Points': cluster_MapPoints_4,'<img src="legend/MasterAddress_2.png" /> Addresses': cluster_MasterAddress_2,}).addTo(map);
-        setBounds();
+            .title += 'Search for a place';
+        L.control.layers({ "Google Roads": g_roads, "Google Satellite": g_satellite, }, { '<img src="legend/MapPoints_4.png" /> Map Points': cluster_points, '<img src="legend/MasterAddress_2.png" /> Addresses': cluster_address, }).addTo(map);
         map.addControl(new L.Control.Search({
-            layer: cluster_MapPoints_4,
+            layer: cluster_points,
             initial: false,
             zoom: 17,
             hideMarkerOnCollapse: true,
-            propertyName: 'e'}));
+            propertyName: 'e'
+        }));
         document.getElementsByClassName('search-button')[0].className +=
-         ' fa fa-binoculars';
-        </script>
-    </body>
+            ' fa fa-binoculars';
+    </script>
+</body>
+
 </html>
