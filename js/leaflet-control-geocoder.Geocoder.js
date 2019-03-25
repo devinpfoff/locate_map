@@ -57,7 +57,7 @@ module.exports = {
 			if (this.options.geocoder.suggest) {
 				L.DomEvent.addListener(input, 'input', this._change, this);
 			}
-			L.DomEvent.addListener(input, 'blur', function() {
+			L.DomEvent.addListener(input, 'blur', function(e) {
 				if (this.options.collapsed && !this._preventBlurCollapse) {
 					this._collapse();
 				}
@@ -68,6 +68,7 @@ module.exports = {
 			if (this.options.collapsed) {
 				if (this.options.expand === 'click') {
 					L.DomEvent.addListener(container, 'click', function(e) {
+						console.log(e);
 						if (e.button === 0 && e.detail !== 2) {
 							this._toggle();
 						}
