@@ -128,7 +128,10 @@ const Geocoder = new L.Control.Geocoder({
   collapsed: true,
   position: "topleft",
   text: "Search",
-  title: ""
+  title: "",
+  geocoder: new L.Control.Geocoder.Bing(
+    "AtwXbb1UnKtuRdYj94vy94irpjQQ7OD9zZRAryZNc6gCqZq7j825ySllhIOVkj0K"
+  )
 }).addTo(map);
 
 const searchMap = new L.Control.Search({
