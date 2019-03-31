@@ -38,12 +38,10 @@ fetch("data/mappoints.json")
     function pop_points(feature, layer) {
       var popupContent = `
       <table>
-        <tr><td colspan="2" style="white-space: nowrap;"><b>Map Loc: </b>${feature.properties["e"]}</td></tr>
+        <tr><td colspan="2"><b>Map Loc: </b>${feature.properties["e"]}</td></tr>
         <tr><td colspan="2"><b>Type: </b>${feature.properties["m"]}</td></tr>
         <tr><td colspan="2"><b>County: </b>${feature.properties["c"]}</td></tr>
-        <tr><td colspan="2"><b>Township: </b>${
-          feature.properties["t"]
-        }</td></tr>
+        <tr><td colspan="2"><b>Township: </b>${feature.properties["t"]}</td></tr>
       </table>
     `;
       layer.bindPopup(popupContent, {
@@ -76,12 +74,12 @@ fetch("data/address.json")
     function pop_address(feature, layer) {
       var popupContent = `
       <table>
-        <tr><td colspan="2" style="white-space: nowrap;"><b>Address: </b>${feature.properties["a"]}</td></tr>
-        <tr><td colspan="2"><b>City: </b>${feature.properties["ci"]}</td></tr>
-        <tr><td colspan="2"><b>State: </b>${feature.properties["s"]}</td></tr>
-        <tr><td colspan="2"><b>Zip: </b>${feature.properties["z"]}</td></tr>
-        <tr><td colspan="2"><b>County: </b>${feature.properties["c"]}</td></tr>
-        <tr><td colspan="2"><b>Township: </b>${
+        <tr><td colspan="2"><b>Address: </b> ${feature.properties["a"]}</td></tr>
+        <tr><td colspan="2"><b>City: </b> ${feature.properties["ci"]}</td></tr>
+        <tr><td colspan="2"><b>State: </b> ${feature.properties["s"]}</td></tr>
+        <tr><td colspan="2"><b>Zip: </b> ${feature.properties["z"]}</td></tr>
+        <tr><td colspan="2"><b>County: </b> ${feature.properties["c"]}</td></tr>
+        <tr><td colspan="2"><b>Township: </b> ${
           feature.properties["t"]
         }</td></tr>
       </table>
@@ -127,19 +125,20 @@ const measureControl = new L.Control.Measure({
 const Geocoder = new L.Control.Geocoder({
   collapsed: true,
   position: "topleft",
-  text: "Search",
+  placeholder: "Search for a place...",
   title: "",
   geocoder: new L.Control.Geocoder.Bing(
-    "AtwXbb1UnKtuRdYj94vy94irpjQQ7OD9zZRAryZNc6gCqZq7j825ySllhIOVkj0K"
-  )
+          "AtwXbb1UnKtuRdYj94vy94irpjQQ7OD9zZRAryZNc6gCqZq7j825ySllhIOVkj0K"
+        )
 }).addTo(map);
 
 const searchMap = new L.Control.Search({
   layer: cluster_points,
+  propertyName: "e",
   initial: false,
   zoom: 17,
   hideMarkerOnCollapse: true,
-  propertyName: "e"
+  textPlaceholder: "Search for a pole..."
 }).addTo(map);
 
 document.querySelector(".leaflet-control-measure-toggle").innerHTML = "";
